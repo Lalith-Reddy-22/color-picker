@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { ChromePicker } from "react-color";
+import styled from "styled-components";
 
-function App() {
+const AppWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: ${({ selectedColor }) => selectedColor};
+`;
+
+const ColorBox = styled.div`
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-bottom: 10px;
+`;
+
+const App = () => {
+  const [selectedColor, setSelectedColor] = useState("#ffffff");
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color.hex);
+  };
+
+  const handleButtonClick = () => {
+    setShowColorPicker(!showColorPicker);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWrapper selectedColor={selectedColor}>
+      <ColorBox>
+        <ButtonWrapper>
+          <button onClick={handleButtonClick}>Select Color</button>
+        </ButtonWrapper>
+        {showColorPicker && (
+          <ChromePicker color={selectedColor} onChange={handleColorChange} />
+        )}
+      </ColorBox>
+    </AppWrapper>
   );
-}
+};
 
 export default App;
